@@ -98,7 +98,7 @@ async function createCard(pokemon) {
   info.appendChild(types);
 
   const interval = Math.ceil(100 / data.types.length);
-  console.log(interval);
+  // console.log(interval);
 
   const ul = document.createElement('ul');
   info.appendChild(ul);
@@ -118,7 +118,7 @@ async function createCard(pokemon) {
     }
   }
 
-  console.log('gradient:', gradient);
+  // console.log('gradient:', gradient);
   card.style.background = `linear-gradient(45deg, ${gradient})`;
 
   const footer = document.createElement('footer');

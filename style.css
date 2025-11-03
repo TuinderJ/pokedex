@@ -29,6 +29,12 @@ body > header > button {
   box-shadow: 0 0 15px;
   border-radius: 0.5rem;
   position: relative;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.1);
 }
 
 .card.grey::after {
