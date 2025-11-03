@@ -1,4 +1,4 @@
-const TOTAL_NUMBER_OF_POKEMONS = 151;
+const TOTAL_NUMBER_OF_POKEMONS = 6;
 const TYPE_TO_COLOR = {
   normal: '#A8A77A',
   fire: '#EE8130',
@@ -73,7 +73,7 @@ async function createCard(pokemon) {
 
   card.addEventListener('click', (_event) => {
     if (collected.includes(card.dataset.id)) return;
-    collected.push(card.dataset.id);
+    collectCard(card);
     card.dataset.collected = 'true';
     hideCard(card);
     calculateRemaining();
@@ -165,4 +165,9 @@ function reRenderCards() {
       }
     }
   });
+}
+
+function collectCard(card) {
+  collected.push(card.dataset.id);
+  localStorage.setItem('collected', collected);
 }
