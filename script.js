@@ -1,4 +1,4 @@
-const TOTAL_NUMBER_OF_POKEMONS = 1052;
+const TOTAL_NUMBER_OF_POKEMONS = 1025;
 const TYPE_TO_COLOR = {
   normal: '#A8A77A',
   fire: '#EE8130',
@@ -50,7 +50,12 @@ function main() {
 }
 
 async function loadPokemons() {
-  const pokemons = (await (await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${TOTAL_NUMBER_OF_POKEMONS}`)).json()).results;
+  const pokemons = JSON.parse(localStorage.getItem('pokemons')) || (await (await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${TOTAL_NUMBER_OF_POKEMONS}`)).json()).results;
+  if (!localStorage.getItem('pokemons')) localStorage.setItem('pokemons', JSON.stringify(pokemons));
+  if (pokemons.length != TOTAL_NUMBER_OF_POKEMONS) {
+    localStorage.removeItem('pokemons');
+    return loadPokemons();
+  }
   // console.log(pokemons);
 
   for (const index in pokemons) {
@@ -75,7 +80,24 @@ async function loadPokemons() {
 }
 
 async function createCard(pokemon) {
-  const data = await (await fetch(pokemon.url)).json();
+  const data = JSON.parse(localStorage.getItem(pokemon.name)) || (await (await fetch(pokemon.url)).json());
+  if (!localStorage.getItem(pokemon.name)) {
+    const types = [];
+    data.types.forEach((type) => {
+      // console.log(type);
+      types.push({ type: { name: type.type.name } });
+    });
+    localStorage.setItem(
+      pokemon.name,
+      JSON.stringify({
+        id: data.id,
+        sprites: {
+          front_default: data.sprites.front_default,
+        },
+        types: types,
+      })
+    );
+  }
   // console.log(data);
 
   const card = document.createElement('div');
