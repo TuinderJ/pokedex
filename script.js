@@ -104,14 +104,7 @@ async function createCard(pokemon) {
   if (card.dataset.collected === 'true') hideCard(card);
 
   card.addEventListener('click', (_event) => {
-    if (collected.includes(card.dataset.id)) {
-      const index = collected.indexOf(card.dataset.id);
-      collected.splice(index, 1);
-      card.dataset.collected = 'false';
-      card.classList.remove('grey');
-      calculateRemaining();
-      return;
-    }
+    if (collected.includes(card.dataset.id)) return uncollectCard(card);
     collectCard(card);
     card.dataset.collected = 'true';
     hideCard(card);
@@ -209,4 +202,13 @@ function reRenderCards() {
 function collectCard(card) {
   collected.push(card.dataset.id);
   localStorage.setItem('collected', collected);
+}
+
+function uncollectCard(card) {
+  const index = collected.indexOf(card.dataset.id);
+  collected.splice(index, 1);
+  card.dataset.collected = 'false';
+  card.classList.remove('grey');
+  localStorage.setItem('collected', collected);
+  calculateRemaining();
 }
