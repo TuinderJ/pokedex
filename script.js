@@ -27,7 +27,7 @@ main();
 
 function main() {
   collected = localStorage.getItem('collected') || [];
-  if (typeof collected == String) {
+  if (typeof collected == 'string') {
     collected = collected.split(',');
     if (collected.length > 1) calculateRemaining();
   }
@@ -65,7 +65,6 @@ async function loadPokemons() {
     const container = document.getElementById('card-container');
 
     const card = await createCard(pokemon);
-    card.dataset.collected = collected.includes(parseInt(index) + 1);
     if (collected.includes(parseInt(index) + 1)) hideCard(card);
 
     const searchTerm = document.getElementById('search').value.toLowerCase();
@@ -83,10 +82,7 @@ async function createCard(pokemon) {
   const data = JSON.parse(localStorage.getItem(pokemon.name)) || (await (await fetch(pokemon.url)).json());
   if (!localStorage.getItem(pokemon.name)) {
     const types = [];
-    data.types.forEach((type) => {
-      // console.log(type);
-      types.push({ type: { name: type.type.name } });
-    });
+    data.types.forEach((type) => types.push({ type: { name: type.type.name } }));
     localStorage.setItem(
       pokemon.name,
       JSON.stringify({
@@ -103,11 +99,19 @@ async function createCard(pokemon) {
   const card = document.createElement('div');
   card.dataset.id = data.id;
   card.dataset.name = pokemon.name;
-  card.dataset.collected = 'false';
+  card.dataset.collected = collected.includes(data.id.toString().toString());
   card.className = 'card';
+  if (card.dataset.collected === 'true') hideCard(card);
 
   card.addEventListener('click', (_event) => {
-    if (collected.includes(card.dataset.id)) return;
+    if (collected.includes(card.dataset.id)) {
+      const index = collected.indexOf(card.dataset.id);
+      collected.splice(index, 1);
+      card.dataset.collected = 'false';
+      card.classList.remove('grey');
+      calculateRemaining();
+      return;
+    }
     collectCard(card);
     card.dataset.collected = 'true';
     hideCard(card);
