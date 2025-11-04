@@ -1,4 +1,4 @@
-const TOTAL_NUMBER_OF_POKEMONS = 6;
+const TOTAL_NUMBER_OF_POKEMONS = 151;
 const TYPE_TO_COLOR = {
   normal: '#A8A77A',
   fire: '#EE8130',
@@ -21,17 +21,30 @@ const TYPE_TO_COLOR = {
 };
 
 let hideCollectedCards = true;
-const collected = [];
+let collected = [];
 
 main();
 
 function main() {
+  collected = localStorage.getItem('collected') || [];
+  if (typeof collected == String) {
+    collected = collected.split(',');
+    if (collected.length > 1) calculateRemaining();
+  }
+
   document.getElementById('load-count').querySelector('span').textContent = TOTAL_NUMBER_OF_POKEMONS;
   loadPokemons();
   calculateRemaining();
   document.getElementById('search').addEventListener('keyup', reRenderCards);
   document.getElementById('show-hide-toggle-button').addEventListener('click', (_event) => {
     hideCollectedCards = !hideCollectedCards;
+    reRenderCards();
+  });
+  document.getElementById('clear-storage-button').addEventListener('click', (_event) => {
+    collected = [];
+    localStorage.removeItem('collected');
+    calculateRemaining();
+    document.querySelectorAll('.card').forEach((card) => (card.dataset.collected = 'false'));
     reRenderCards();
   });
 }
