@@ -1,4 +1,4 @@
-const TOTAL_NUMBER_OF_POKEMONS = 151;
+const TOTAL_NUMBER_OF_POKEMONS = 1052;
 const TYPE_TO_COLOR = {
   normal: '#A8A77A',
   fire: '#EE8130',
