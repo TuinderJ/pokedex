@@ -30,12 +30,12 @@ body > header > button {
   border-radius: 0.5rem;
   position: relative;
   cursor: pointer;
-  transition: transform 0.2s ease-in-out;
+  /* transition: transform 0.2s ease-in-out; */
 }
 
-.card:hover {
+/* .card:hover {
   transform: scale(1.1);
-}
+} */
 
 .card.grey::after {
   content: ''; /* Required for pseudo-elements */
